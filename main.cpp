@@ -2,8 +2,8 @@
 #include <set>
 using namespace std;
 // UNCOMMENT THESE FOR MILESTONE 2
-//  #include "tests.cpp"
-//  #include "test_settings.cpp"
+#include "tests.cpp"
+#include "test_settings.cpp"
 #include <iostream>
 
 // declaring functions now so we can use them befpre we implement them!
@@ -12,9 +12,9 @@ int student_main();
 // student_main helpers. Remember to change the necessary function signatures here and
 // where they are implemented for milestone 1!
 void init_map(HashMap<string, int> &map);
-void print_difference(HashMap<string, int> &lecturer_record, string lecturer1, string lecturer2);
+void print_difference(const HashMap<string, int> &lecturer_record, const string lecturer1, const string lecturer2);
 template <typename KeyType, typename MappedTyped>
-std::set<KeyType> find_keys(HashMap<KeyType, MappedTyped> &map);
+std::set<KeyType> find_keys(const HashMap<KeyType, MappedTyped> &map);
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
     {
         cout << ":P" << endl;
         // UNCOMMENT THIS FOR MILESTONE 2
-        //  run_test_harness();
+        run_test_harness();
     }
     else
     {
@@ -92,8 +92,8 @@ std::set<KeyType> find_keys(const HashMap<KeyType, MappedTyped> &map)
 // second lecturer lectured
 void print_difference(const HashMap<string, int> &lecturer_record, const string lecturer1, const string lecturer2)
 {
-    int year1 = lecturer_record.at(lecturer1);
-    int year2 = lecturer_record.at(lecturer2);
+    const int year1 = lecturer_record.at(lecturer1);
+    const int year2 = lecturer_record.at(lecturer2);
     if (year1 < year2)
     {
         cout << lecturer1 << " lectured first and " << year2 - year1 << " year(s) later, " << lecturer2 << " lectured" << endl;

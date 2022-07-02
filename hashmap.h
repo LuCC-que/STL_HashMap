@@ -144,7 +144,7 @@ public:
      *
      * Complexity: O(1) (inlined because function is short)
      */
-    inline size_t size();
+    inline size_t size() const;
 
     /*
      * Returns whether the HashMap is empty.
@@ -157,7 +157,7 @@ public:
      *
      * Complexity: O(1) (inlined because function is short)
      */
-    inline bool empty();
+    inline bool empty() const;
 
     /*
      * Returns the load_factor, defined as size/bucket_count.
@@ -173,7 +173,7 @@ public:
      * Notes: our minimal implementation does not automatically rehash when the load
      * factor is too high. If you want as an extension, you can implement automatic rehashing.
      */
-    inline float load_factor();
+    inline float load_factor() const;
 
     /*
      * Returns the number of buckets.
@@ -266,7 +266,9 @@ public:
      *
      * Complexity: O(1) amortized average case, O(N) worst case, N = number of elements
      */
-    iterator find(const K &key) const;
+    iterator find(const K &key);
+
+    const_iterator find(const K &key) const;
 
     /*
      * Inserts the K/M pair into the HashMap, if the key does not already exist.
@@ -376,6 +378,8 @@ public:
      *      while (iter != map.end()) {...}
      */
     iterator end();
+
+    const_iterator end() const;
 
     /*
      * Function that will print to std::cout the contents of the hash table as

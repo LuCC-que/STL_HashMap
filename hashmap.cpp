@@ -20,19 +20,19 @@ HashMap<K, M, H>::~HashMap()
 }
 
 template <typename K, typename M, typename H>
-inline size_t HashMap<K, M, H>::size()
+inline size_t HashMap<K, M, H>::size() const
 {
     return _size;
 }
 
 template <typename K, typename M, typename H>
-inline bool HashMap<K, M, H>::empty()
+inline bool HashMap<K, M, H>::empty() const
 {
     return size() == 0;
 }
 
 template <typename K, typename M, typename H>
-inline float HashMap<K, M, H>::load_factor()
+inline float HashMap<K, M, H>::load_factor() const
 {
     return static_cast<float>(size()) / bucket_count();
 };
@@ -74,9 +74,15 @@ void HashMap<K, M, H>::clear()
 }
 
 template <typename K, typename M, typename H>
-typename HashMap<K, M, H>::iterator HashMap<K, M, H>::find(const K &key) const
+typename HashMap<K, M, H>::iterator HashMap<K, M, H>::find(const K &key)
 {
     return make_iterator(find_node(key).second);
+}
+
+template <typename K, typename M, typename H>
+typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::find(const K &key) const
+{
+    return static_cast<const_iterator>(const_cast<HashMap<K, M, H> *>(this)->find(key));
 }
 
 template <typename K, typename M, typename H>
@@ -143,6 +149,12 @@ template <typename K, typename M, typename H>
 typename HashMap<K, M, H>::iterator HashMap<K, M, H>::end()
 {
     return make_iterator(nullptr);
+}
+
+template <typename K, typename M, typename H>
+typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::end() const
+{
+    return static_cast<const_iterator>(const_cast<HashMap<K, M, H> *>(this)->begin());
 }
 
 template <typename K, typename M, typename H>
