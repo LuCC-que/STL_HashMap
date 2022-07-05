@@ -4,14 +4,34 @@
  */
 
 #include "hashmap.h"
+#include <stdlib.h>
 
 template <typename K, typename M, typename H>
-HashMap<K, M, H>::HashMap() : HashMap{kDefaultBuckets} {}
+HashMap<K, M, H>::HashMap()
+    : HashMap{kDefaultBuckets} {}
 
 template <typename K, typename M, typename H>
-HashMap<K, M, H>::HashMap(size_t bucket_count, const H &hash) : _size{0},
-                                                                _hash_function{hash},
-                                                                _buckets_array(bucket_count, nullptr) {}
+HashMap<K, M, H>::HashMap(size_t bucket_count, const H &hash)
+    : _size{0},
+      _hash_function{hash},
+      _buckets_array(bucket_count, nullptr) {}
+
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(const HashMap<K, M, H> &hm)
+    : _size{hm.size()},
+      _hash_function(hm._hash_function),
+      _buckets_array(hm.bucket_count(), nullptr)
+{
+    std::copy(hm.begin(), hm.end(), this->begin());
+}
+
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(const HashMap<K, M, H> &&hm)
+    : _size{std::move(hm.size())},
+      _hash_function(std::move(hm._hash_function)),
+      _buckets_array(std::move(hm._buckets_array))
+{
+}
 
 template <typename K, typename M, typename H>
 HashMap<K, M, H>::~HashMap()
@@ -255,7 +275,10 @@ void HashMap<K, M, H>::rehash(size_t new_bucket_count)
 
 template <typename K, typename M, typename H>
 template <typename InputIt>
-HashMap<K, M, H>::HashMap(InputIt first, InputIt last, size_t bucket_count, const H &hash) : HashMap(bucket_count, hash)
+HashMap<K, M, H>::HashMap(InputIt first, InputIt last,
+                          size_t bucket_count,
+                          const H &hash)
+    : HashMap(bucket_count, hash)
 {
     for (auto iter = first; iter != last; ++iter)
     {
@@ -264,8 +287,43 @@ HashMap<K, M, H>::HashMap(InputIt first, InputIt last, size_t bucket_count, cons
 }
 
 template <typename K, typename M, typename H>
-HashMap<K, M, H>::HashMap(std::initializer_list<value_type> init, size_t bucket_count, const H &hash) : HashMap{init.begin(), init.end(), bucket_count, hash}
+HashMap<K, M, H>::HashMap(std::initializer_list<value_type> init,
+                          size_t bucket_count,
+                          const H &hash)
+    : HashMap{init.begin(), init.end(), bucket_count, hash}
 {
+}
+
+// copy assignment
+template <typename K, typename M, typename H>
+HashMap<K, M, H> &HashMap<K, M, H>::operator=(const HashMap &hm)
+{
+    if (this != &hm)
+    {
+        this->_buckets_array.clear();
+        this->_size = hm.size();
+        this->_hash_function = hm._hash_function;
+        this->_buckets_array(hm.bucket_count(), nullptr);
+        std::copy(hm.begin(), hm.end(), begin());
+    }
+
+    return *this;
+}
+
+// move assignment
+template <typename K, typename M, typename H>
+HashMap<K, M, H> &HashMap<K, M, H>::operator=(const HashMap &&hm)
+{
+    if (this != &hm)
+    {
+        _buckets_array.clear();
+        _size = std::move(hm.size);
+        _hash_function = std::move(hm._hash_function);
+        _buckets_array(hm.bucket_count(), nullptr);
+        _buckets_array = std::move(hm._buckets_array);
+    }
+
+    return *this;
 }
 
 template <typename K, typename M, typename H>

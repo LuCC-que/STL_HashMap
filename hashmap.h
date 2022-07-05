@@ -418,7 +418,9 @@ public:
      * Complexity: O(N), where N = std::distance(first, last);
      */
     template <typename InputIt>
-    HashMap(InputIt first, InputIt last, size_t bucket_count = kDefaultBuckets, const H &hash = H());
+    HashMap(InputIt first, InputIt last,
+            size_t bucket_count = kDefaultBuckets,
+            const H &hash = H());
 
     /*
      * Initializer list constructor
@@ -438,7 +440,9 @@ public:
      *
      * Also, you should check out the delegating constructor note in the .cpp file.
      */
-    HashMap(std::initializer_list<value_type> init, size_t bucket_count = kDefaultBuckets, const H &hash = H());
+    HashMap(std::initializer_list<value_type> init,
+            size_t bucket_count = kDefaultBuckets,
+            const H &hash = H());
 
     /*
      * Indexing operator
@@ -458,6 +462,10 @@ public:
 
     /* Milestone 2 headers (you need to declare these) */
     // TODO: declare headers for copy constructor/assignment, move constructor/assignment
+    HashMap(const HashMap<K, M, H> &hm);
+    HashMap(const HashMap<K, M, H> &&hm);
+    HashMap<K, M, H> &operator=(const HashMap<K, M, H> &hm);
+    HashMap<K, M, H> &operator=(const HashMap<K, M, H> &&hm);
 
 private:
     /*
