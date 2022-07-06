@@ -121,6 +121,8 @@ public:
      */
     explicit HashMap(size_t bucket_count, const H &hash = H());
 
+    HashMap(const HashMap &hm);
+
     /*
      * Destructor.
      *
@@ -462,10 +464,12 @@ public:
 
     /* Milestone 2 headers (you need to declare these) */
     // TODO: declare headers for copy constructor/assignment, move constructor/assignment
-    HashMap(const HashMap<K, M, H> &hm);
-    HashMap(const HashMap<K, M, H> &&hm);
-    HashMap<K, M, H> &operator=(const HashMap<K, M, H> &hm);
-    HashMap<K, M, H> &operator=(const HashMap<K, M, H> &&hm);
+
+    // HashMap(const HashMap<K, M, H> &&hm);
+    // HashMap<K, M, H> &operator=(const HashMap<K, M, H> &hm);
+    // HashMap<K, M, H> &operator=(const HashMap<K, M, H> &&hm);
+
+    // HashMap<K, M, H> random(HashMap<K, M, H> &hm);
 
 private:
     /*
