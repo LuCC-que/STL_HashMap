@@ -30,13 +30,59 @@ HashMap<K, M, H>::HashMap(const HashMap &hm)
 }
 
 // move constructor
-// template <typename K, typename M, typename H>
-// HashMap<K, M, H>::HashMap(const HashMap<K, M, H> &&hm)
-//     : _size{std::move(hm.size())},
-//       _hash_function(std::move(hm._hash_function)),
-//       _buckets_array(std::move(hm._buckets_array))
-// {
-// }
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(HashMap &&hm)
+    : _size{std::move(hm._size)},
+      _hash_function{std::move(hm._hash_function)},
+      _buckets_array{hm.bucket_count(), nullptr}
+{
+    for (size_t i = 0; i < hm.bucket_count(); ++i)
+    {
+        _buckets_array[i] = std::move(hm._buckets_array[i]);
+        hm._buckets_array[i] = nullptr;
+    }
+
+    hm._size = 0;
+}
+
+// copy assignment
+template <typename K, typename M, typename H>
+HashMap<K, M, H> &HashMap<K, M, H>::operator=(const HashMap &hm)
+{
+
+    if (&hm == this)
+    {
+        return *this;
+    }
+
+    clear();
+    for (auto &[key, value] : hm)
+    {
+        insert({key, value});
+    }
+    return *this;
+}
+
+// move assignment
+template <typename K, typename M, typename H>
+HashMap<K, M, H> &HashMap<K, M, H>::operator=(HashMap &&hm)
+{
+    if (this != &hm)
+    {
+        clear();
+        _size = std::move(hm._size);
+        _hash_function = std::move(hm._hash_function);
+        _buckets_array.resize(hm.bucket_count());
+        for (size_t i = 0; i < hm.bucket_count(); i++)
+        {
+            _buckets_array[i] = std::move(hm._buckets_array[i]);
+            hm._buckets_array[i] = nullptr;
+        }
+        hm._size = 0;
+    }
+
+    return *this;
+}
 
 template <typename K, typename M, typename H>
 HashMap<K, M, H>::~HashMap()
